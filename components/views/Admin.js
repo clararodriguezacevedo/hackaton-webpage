@@ -808,7 +808,7 @@ const MentorAssignment = ({ token }) => {
                   mentors={mentors}
                   setMentors={setMentors}
                   voteAmount={
-                    ease.filter((e) => e.id == submission.submission.id).length
+                    ease.filter((e) => e.id === submission.submission.id).length
                   }
                 ></SubmissionCard>
               );
