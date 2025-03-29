@@ -505,6 +505,7 @@ const SubmissionCard = ({
   setMentors,
   ease,
   setEase,
+  voteAmount,
   ...extendedProps
 }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -572,18 +573,23 @@ const SubmissionCard = ({
           <Text size={TextSize} textAlign="start">
             {submission.email}
           </Text>
-
-          <Select
-            my="1%"
-            placeholder="Facilidad de Ejecución"
-            value={selectedValue}
-            onChange={handleSelectedValueChange}
-          >
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </Select>
+          {ease.length === 0 || !ease[0].voted ? (
+            <Select
+              my="1%"
+              placeholder="Facilidad de Ejecución"
+              value={selectedValue}
+              onChange={handleSelectedValueChange}
+            >
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </Select>
+          ) : (
+            <>
+              Ya votó: {ease[0].ease} <br></br>
+            </>
+          )}
           {selectedValue === "" ? null : Number(selectedValue) === 0 ? (
             <>No se entrega</>
           ) : (
@@ -601,6 +607,11 @@ const SubmissionCard = ({
                 className="w-full md:w-20rem"
               />
             </div>
+          )}
+          {voteAmount > 0 ? (
+            <Text>Cantidad de Votos: {voteAmount}</Text>
+          ) : (
+            <></>
           )}
         </VStack>
       </Box>
@@ -658,16 +669,15 @@ const MentorAssignment = ({ token }) => {
           }
         }
 
-        const adminVotesReq = await axiosApiInstance.get(
-          `/votes`
-        );
+        const adminVotesReq = await axiosApiInstance.get(`/votes`);
         const adminVotesObj = adminVotesReq.data;
-        const easeArr = []
+        const easeArr = [];
         for (const adminVote of adminVotesObj) {
           easeArr.push({
             id: adminVote.submissionId,
-            ease: adminVote.facilidad
-          })
+            ease: adminVote.facilidad,
+            voted: Boolean(adminVote.facilidad) || Boolean(adminVote.userId),
+          });
         }
 
         setEase([...easeArr]);
@@ -695,7 +705,7 @@ const MentorAssignment = ({ token }) => {
     );
   }, []);
 
-  const handleSaveChanges = (mentors) => {
+  const handleSaveChanges = async (mentors) => {
     const requests = [];
     for (const mentor of mentors) {
       const request = axiosApiInstance.put(
@@ -707,8 +717,9 @@ const MentorAssignment = ({ token }) => {
 
       requests.push(request);
     }
-    for (const e of ease) {
-      if(!e || !e.ease) continue;
+    const easeToUpload = ease.filter((e) => !e.voted);
+    for (const e of easeToUpload) {
+      if (!e || !e.ease) continue;
       const votingRequest = axiosApiInstance.post("/votes", {
         submissionId: e.id,
         facilidad: e.ease,
@@ -730,6 +741,9 @@ const MentorAssignment = ({ token }) => {
           duration: 3000,
         });
       });
+    const easeNotUpdated = ease.filter((e) => !easeToUpload.includes(e));
+    easeToUpload.forEach((e) => (e.voted = true));
+    setEase([...easeNotUpdated, ...easeToUpload]);
   };
 
   const getVotingReport = () => {
@@ -756,8 +770,8 @@ const MentorAssignment = ({ token }) => {
 
   const handleSetEase = (submissionId, val) => {
     const newEase = ease.filter((e) => e.id !== submissionId);
-    setEase( [ {id: submissionId, ease: val}, ...newEase] );
-  }
+    setEase([{ id: submissionId, ease: val }, ...newEase]);
+  };
 
   return (
     <HStack width="full" align="start" justifyContent="start">
@@ -786,11 +800,16 @@ const MentorAssignment = ({ token }) => {
                   mx="2%"
                   my="1%"
                   width={["100%", "80%", "45%", "40%", "25%"]}
-                  ease={ease.filter((e) => e.id === submission.submission.id)}
+                  ease={ease.filter(
+                    (e) => e.id === submission.submission.id && e.ease
+                  )}
                   setEase={handleSetEase}
                   submission={{ number: index + 1, ...submission }}
                   mentors={mentors}
                   setMentors={setMentors}
+                  voteAmount={
+                    ease.filter((e) => e.id == submission.submission.id).length
+                  }
                 ></SubmissionCard>
               );
             })}
