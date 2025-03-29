@@ -1,4 +1,5 @@
 import { AddIcon, MinusIcon, CloseIcon } from "@chakra-ui/icons";
+import { MdPresentToAll } from "react-icons/md";
 import {
   Heading,
   Tabs,
@@ -31,7 +32,7 @@ import {
   ModalBody,
   OrderedList,
   ListItem,
-  Textarea,
+  Textarea
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { axiosApiInstance } from "../../config/axiosConfig";
@@ -225,7 +226,43 @@ const RateTeamCard = ({ team, ...extendedProps }) => {
             >
               <SocialIcon network="youtube" as="div" />
             </a>
+            <a
+              rel={"external"}
+              href={
+                team.pitchLink
+                  ? team.pitchLink.includes("//")
+                    ? team.pitchLink
+                    : `//${team.pitchLink}`
+                  : ""
+              }
+              target={"_blank"}
+            >
+                            <IconButton
+                aria-label="Presentation"
+                icon={<MdPresentToAll />}
+                size="lg"
+                isRound
+                bg="#24292e"
+                color="CSOrange"
+                _hover={{ bg: "#33383f" }}
+                _active={{ bg: "#1b1f23" }}
+              />
+            </a>
           </HStack>
+          <Spacer></Spacer>
+          {(team.deployementLink !== undefined && team.deployementLink !== "") ? ( <a
+              rel={"external"}
+              href={
+                team.deployementLink
+                  ? team.deployementLink.includes("//")
+                    ? team.deployementLink
+                    : `//${team.deployementLink}`
+                  : ""
+              }
+              target={"_blank"}
+            >
+              <Text textDecoration="underline"> Go To Deployment </Text>
+            </a>) : (null)}
           <Spacer></Spacer>
         </VStack>
         <Center>
@@ -302,6 +339,8 @@ const TeamRating = () => {
             teamDescription: submissionObj.description,
             githubLink: submissionObj.repo,
             youtubeLink: submissionObj.video,
+            pitchLink: submissionObj.pitch,
+            deployementLink: submissionObj?.deployLink,
             submission: sub,
           };
 
