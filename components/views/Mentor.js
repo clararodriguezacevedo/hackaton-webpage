@@ -250,6 +250,20 @@ const RateTeamCard = ({ team, ...extendedProps }) => {
             </a>
           </HStack>
           <Spacer></Spacer>
+          {(team.deployementLink !== undefined && team.deployementLink !== "") ? ( <a
+              rel={"external"}
+              href={
+                team.deployementLink
+                  ? team.deployementLink.includes("//")
+                    ? team.deployementLink
+                    : `//${team.deployementLink}`
+                  : ""
+              }
+              target={"_blank"}
+            >
+              <Text textDecoration="underline"> Go To Deployment </Text>
+            </a>) : (null)}
+          <Spacer></Spacer>
         </VStack>
         <Center>
           <Text fontSize={TextSize} color="red.500">
@@ -326,6 +340,7 @@ const TeamRating = () => {
             githubLink: submissionObj.repo,
             youtubeLink: submissionObj.video,
             pitchLink: submissionObj.pitch,
+            deployementLink: submissionObj?.deployLink,
             submission: sub,
           };
 
