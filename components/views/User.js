@@ -56,7 +56,6 @@ const UserView = ({ userInfo }) => {
     async (data) => {
       try {
         data.userId = userInfo.uid;
-        console.log(data);
         await axiosApiInstance.post("/submissions", data);
         toast({
           title: "Proyecto enviado",
@@ -89,10 +88,7 @@ const UserView = ({ userInfo }) => {
   const onSubmitVideo = useCallback(
     async (data, submission) => {
       try {
-        console.log(submission);
         data.userId = userInfo.uid;
-        console.log(data);
-        console.log(`/submissions/${submission.id}`);
         await axiosApiInstance.patch(`/submissions/${submission.id}`, data);
         toast({
           title: "Video enviado",
@@ -284,7 +280,7 @@ const UserView = ({ userInfo }) => {
             required={false}
             errorMsg="Se debe ingresar un link válido"
             validation={{
-              required: true,
+              required: false,
               pattern:
                 /^(https?:\/\/[^\s$.?#].[^\s]*)$/,
             }}
