@@ -575,28 +575,6 @@ const TeamRating = () => {
                 <AccordionItem>
                   <h2>
                     <AccordionButton>
-                      <Text fontSize={TextSize}>Facilidad de Ejecución</Text>
-                      <Spacer></Spacer>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </h2>
-                  <AccordionPanel>
-                    <OrderedList textAlign="start">
-                      <ListItem>
-                        El proyecto no incluye instrucciones de ejecución, o incluye instrucciones poco claras.
-                      </ListItem>
-                      <ListItem>
-                        El proyecto incluye instrucciones concretas, exhaustivas y con versiones, pero el evaluador necesita ejecutar distintos servicios de manera independiente.
-                      </ListItem>
-                      <ListItem>
-                        El proyecto está bien deployado, o puede ejecutarse utilizando un único script o mediante un contenedor.
-                      </ListItem>
-                    </OrderedList>
-                  </AccordionPanel>
-                </AccordionItem>
-                <AccordionItem>
-                  <h2>
-                    <AccordionButton>
                       <Text fontSize={TextSize}>Interfaz de Usuario</Text>
                       <Spacer></Spacer>
                       <AccordionIcon />
