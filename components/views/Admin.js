@@ -37,6 +37,7 @@ import {
   Input,
   InputRightElement,
   Box,
+  Select,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -291,6 +292,7 @@ const TeamSelection = ({ token }) => {
 
       setIsLoading(false);
     }
+
     getUsersFromApi();
   }, []);
 
@@ -501,20 +503,31 @@ const SubmissionCard = ({
   submission,
   mentors,
   setMentors,
+  ease,
+  setEase,
   ...extendedProps
 }) => {
   const { isOpen, onToggle } = useDisclosure();
 
   const [selectedMentors, setSelectedMentors] = useState(submission.mentors);
+  const [selectedValue, setSelectedValue] = useState(
+    ease.length > 0 ? ease[0].ease : null
+  );
+  const handleSelectedValueChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedValue(selectedValue);
+    setEase(submission.submission.id, selectedValue);
+  };
+
   const handleSelectedMentorsChange = (selectedMentors) => {
     setSelectedMentors(selectedMentors);
 
     for (const mentor of mentors) {
-      mentor.submissions = mentor.submissions.filter(
-        (sub) => sub !== submission.submission.id
-      );
+      mentor.submissions = Array.isArray(mentor.submissions)
+        ? mentor.submissions.filter((sub) => sub !== submission.submission.id)
+        : [];
 
-      if (selectedMentors.map((mentor) => mentor.id).includes(mentor.id)) {
+      if (selectedMentors.some((m) => m.id === mentor.id)) {
         mentor.submissions.push(submission.submission.id);
       }
     }
@@ -559,28 +572,47 @@ const SubmissionCard = ({
           <Text size={TextSize} textAlign="start">
             {submission.email}
           </Text>
-          <Text fontSize={TextSize} textAlign="start" color="CSOrange">
-            Asignar Mentores:
-          </Text>
+
+          <Select
+            my="1%"
+            placeholder="Facilidad de Ejecución"
+            value={selectedValue}
+            onChange={handleSelectedValueChange}
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </Select>
+          {selectedValue === "" ? null : Number(selectedValue) === 0 ? (
+            <>No se entrega</>
+          ) : (
+            <div>
+              <Text fontSize={TextSize} textAlign="start" color="CSOrange">
+                Asignar Mentores:
+              </Text>
+              <MultiSelect
+                value={selectedMentors}
+                onChange={(e) => handleSelectedMentorsChange(e.value)}
+                options={mentors}
+                optionLabel="name"
+                placeholder="Seleccione los mentores"
+                display="chip"
+                className="w-full md:w-20rem"
+              />
+            </div>
+          )}
         </VStack>
-        <MultiSelect
-          value={selectedMentors}
-          onChange={(e) => handleSelectedMentorsChange(e.value)}
-          options={mentors}
-          optionLabel="name"
-          placeholder="Seleccione los mentores"
-          display="chip"
-          className="w-full md:w-20rem"
-        />
       </Box>
     </VStack>
   );
 };
 
-const MentorAssignment = () => {
+const MentorAssignment = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [teams, setTeams] = useState([]);
   const [mentors, setMentors] = useState([]);
+  const [ease, setEase] = useState([]);
 
   const toast = useToast();
   useEffect(() => {
@@ -599,11 +631,13 @@ const MentorAssignment = () => {
               `/users/${submissionObj.userId}`
             );
             const teamData = team.data;
-
             const submissionMentors = [];
 
             for (const mentor of mentors) {
-              if (mentor.submissions.includes(sub.id)) {
+              if (
+                Array.isArray(mentor.submissions) &&
+                mentor.submissions.includes(sub.id)
+              ) {
                 submissionMentors.push(mentor);
               }
             }
@@ -624,7 +658,20 @@ const MentorAssignment = () => {
           }
         }
 
-        setTeams((prevTeams) => [...updatedTeams]);
+        const adminVotesReq = await axiosApiInstance.get(
+          `/votes`
+        );
+        const adminVotesObj = adminVotesReq.data;
+        const easeArr = []
+        for (const adminVote of adminVotesObj) {
+          easeArr.push({
+            id: adminVote.submissionId,
+            ease: adminVote.facilidad
+          })
+        }
+
+        setEase([...easeArr]);
+        setTeams([...updatedTeams]);
       } catch (err) {
         alert("Error getting submissions");
       }
@@ -634,7 +681,7 @@ const MentorAssignment = () => {
       try {
         const response = await axiosApiInstance.get(`/mentors`);
         const mentors = response.data.mentors;
-        setMentors((prevMentors) => [...mentors]);
+        setMentors([...mentors]);
 
         return mentors;
       } catch (err) {
@@ -660,7 +707,14 @@ const MentorAssignment = () => {
 
       requests.push(request);
     }
-
+    for (const e of ease) {
+      if(!e || !e.ease) continue;
+      const votingRequest = axiosApiInstance.post("/votes", {
+        submissionId: e.id,
+        facilidad: e.ease,
+      });
+      requests.push(votingRequest);
+    }
     Promise.all(requests)
       .then(() => {
         toast({
@@ -700,6 +754,11 @@ const MentorAssignment = () => {
       });
   };
 
+  const handleSetEase = (submissionId, val) => {
+    const newEase = ease.filter((e) => e.id !== submissionId);
+    setEase( [ {id: submissionId, ease: val}, ...newEase] );
+  }
+
   return (
     <HStack width="full" align="start" justifyContent="start">
       <VStack align="start" width="full">
@@ -727,6 +786,8 @@ const MentorAssignment = () => {
                   mx="2%"
                   my="1%"
                   width={["100%", "80%", "45%", "40%", "25%"]}
+                  ease={ease.filter((e) => e.id === submission.submission.id)}
+                  setEase={handleSetEase}
                   submission={{ number: index + 1, ...submission }}
                   mentors={mentors}
                   setMentors={setMentors}
@@ -749,7 +810,7 @@ const MentorAssignment = () => {
 const AdminView = ({ token }) => {
   return (
     <Tabs variant="enclosed">
-      <TabList  paddingY="5%">
+      <TabList paddingY="5%">
         <Tab>Selección de equipos</Tab>
         <Tab>Registro de mentores</Tab>
         <Tab>Asignación de mentores a equipos</Tab>
@@ -766,7 +827,7 @@ const AdminView = ({ token }) => {
         </TabPanel>
         {/* Asignar mentores a equipos*/}
         <TabPanel>
-          <MentorAssignment />
+          <MentorAssignment token={token} />
         </TabPanel>
       </TabPanels>
     </Tabs>
