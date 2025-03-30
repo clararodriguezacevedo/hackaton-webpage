@@ -252,9 +252,10 @@ const UserView = ({ userInfo }) => {
             name="additionalContent"
             register={register}
             errors={errors}
+            InputComponent={Textarea}
             required={false}
-            errorMsg="Se debe ingresar el hash completo de 40 caracteres"
             validation={{
+              required: false,
               minLength: 5,
             }}
           />
