@@ -1,10 +1,5 @@
-'use client';
-
 import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import Layout from '../components/layouts/Main';
-import Fonts from '../components/Fonts';
-import theme from '../lib/theme';
+import { ChakraUIProvider } from './chakra-provider';
 
 export default function RootLayout({
   children,
@@ -14,12 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ChakraProvider theme={theme}>
-          <Fonts />
-          <Layout>
-            {children}
-          </Layout>
-        </ChakraProvider>
+        <ChakraUIProvider>{children}</ChakraUIProvider>
       </body>
     </html>
   );
