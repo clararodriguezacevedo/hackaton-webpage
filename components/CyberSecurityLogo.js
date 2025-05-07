@@ -1,3 +1,5 @@
+'use client';
+
 const CyberSecurityLogo = ({
   color,
   strokeWidth,

@@ -1,3 +1,4 @@
+'use client';
 import { Flex, Heading, Image, Link } from "@chakra-ui/react";
 
 import styled from "@emotion/styled";

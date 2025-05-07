@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { useEffect, useState, React } from "react";
+import  { useEffect, useState } from "react";
 import auth from "../../config/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";

@@ -1,3 +1,4 @@
+'use client';
 import { initializeApp } from "firebase/app";
 import { getAuth, browserLocalPersistence } from "firebase/auth";
 
@@ -14,6 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
-await auth.setPersistence(browserLocalPersistence);
+//await auth.setPersistence(browserLocalPersistence);
 
 export default auth;

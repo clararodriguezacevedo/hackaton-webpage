@@ -1,3 +1,4 @@
+'use client';
 import { Heading, Flex, Box, Img, VStack } from "@chakra-ui/react";
 // eslint-disable-next-line import/no-named-as-default
 import Particles, { initParticlesEngine } from "@tsparticles/react";
