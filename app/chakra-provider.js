@@ -6,7 +6,7 @@ import Layout from '../components/layouts/Main';
 import theme from '../lib/theme';
 import Fonts from '../components/Fonts';
 
-export function ChakraUIProvider({ children }: { children: React.ReactNode }) {
+export function ChakraUIProvider({ children }) {
   return (
     <ChakraProvider theme={theme}>
       <Fonts />

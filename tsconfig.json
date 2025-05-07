@@ -29,7 +29,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/2022/page.js", "app/2023/page.js", "app/2024/page.js", "app/chronicles/page.js", "app/countdown/page.js", "app/forgot-password/page.js", "app/login/page.js", "app/profile/page.js", "app/register/page.js", "app/SMJ/page.js", "app/layout.js", "app/not-found.js", "app/page.js", "app/chakra-provider.js", "app/animate-prescence.js"  ],
   "exclude": [
     "node_modules"
   ]
