@@ -1,6 +1,8 @@
 import React from 'react';
 import { ChakraUIProvider } from './chakra-provider';
 import { fontVariables } from '../components/Fonts';
+import Animated from './animate-prescence';
+
 
 export default function RootLayout({
   children,
@@ -8,9 +10,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={fontVariables}>
+    <html lang="en">
       <body>
-        <ChakraUIProvider>{children}</ChakraUIProvider>
+        <ChakraUIProvider>
+          <Animated>
+          {children}
+          </Animated>
+          </ChakraUIProvider>
       </body>
     </html>
   );
