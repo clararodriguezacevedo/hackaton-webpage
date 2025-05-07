@@ -22,6 +22,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import useStore from "../../config/storeConfig";
 import { axiosApiInstance, setAxiosToken } from "../../config/axiosConfig";
+import React from "react";
 
 const HeadingSize = ["sm", "md", "lg", "xl", "2xl"];
 const TextSize = ["xs", "sm", "md", "lg", "xl"];
@@ -91,7 +92,7 @@ const Home = () => {
   }
 
 
-  const [registerSection, setRegisterSection] = useState();
+  const [registerSection, setRegisterSection] = useState<React.ReactNode>();
   const inscriptionsEnabled = useStore((state) => state.inscriptionsEnabled);
 
   useEffect(() => {

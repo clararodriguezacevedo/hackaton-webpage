@@ -1,6 +1,5 @@
 import React from 'react';
 import { ChakraUIProvider } from './chakra-provider';
-import { fontVariables } from '../components/Fonts';
 import Animated from './animate-prescence';
 
 
