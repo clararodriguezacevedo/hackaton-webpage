@@ -1,3 +1,5 @@
+'use client';
+
 import useStore from "../config/storeConfig";
 import React, { useEffect, useState } from "react";
 import { Box, HStack, Text, VStack } from "@chakra-ui/react";

@@ -23,7 +23,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import styled from "@emotion/styled";
 import Logo from "./Logo";
 import useStore from "../config/storeConfig";
-import Timer from "../components/Timer";
+import Timer from "./Timer";
 
 const PrimaryButton = styled(Button)`
   border-radius: 4px;
