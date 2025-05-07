@@ -1,5 +1,3 @@
-'use client';
-
 import React from "react";
 import { Container, Flex, Spacer } from "@chakra-ui/react";
 import NewNavbar from "../NewNavbar";
