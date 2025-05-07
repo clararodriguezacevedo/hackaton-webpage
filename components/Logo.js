@@ -1,3 +1,4 @@
+'use client';
 import Link from "next/link";
 import { Img } from "@chakra-ui/react";
 import styled from "@emotion/styled";
