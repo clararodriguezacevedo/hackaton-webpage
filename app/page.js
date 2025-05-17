@@ -22,6 +22,7 @@ import {
   Box,
   CircularProgress,
 } from "@chakra-ui/react";
+import { Separator } from "../components/ui/separator";
 import SponsorLogo from "../components/SponsorLogo";
 import styled from "@emotion/styled";
 import NewLogo from "../components/NewLogo";
@@ -56,41 +57,41 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-const HeadingSize = ["sm", "md", "lg", "xl", "2xl"];
+const HeadingSize = ["sm", "text-xl", "text-2xl", "text-3xl", "text-4xl"];
 const TextSize = ["xs", "sm", "md", "lg", "xl"];
 //Dejamos algunos subcomponentes aca, no los hago como componentes porque no se reutilizan
 const GeneralInfo = ({ ...extendedProps }) => {
   return (
-    <VStack spacing={4} paddingX="5%" w="full" {...extendedProps}>
-      <Heading
-        as="h1"
-        display="inline"
-        size={HeadingSize}
-        color="CSLightOrange"
-        textAlign={"center"}
-        paddingY="6px"
-      >
+    <div
+      className="w-full px-[5%] my-16 space-y-4 flex flex-col justify-center"
+      {...extendedProps}
+    >
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         ¿Qué es HackITBA?
-      </Heading>
-      <Divider variant="thick"></Divider>
-      <Text textAlign="center" fontSize={TextSize}>
-        <Text as="span" color="CSLightBlue">
-          HackITBA
-        </Text>{" "}
-        es una hackathon presencial organizada por y para estudiantes, donde, en
-        grupos de 4 personas, deben generar un MVP en 36 horas de competencia
+      </h1>
+
+      <Separator className="bg-border h-[1px]" />
+
+      <p className="text-center text-xl">
+        <span className="text-cs-lightBlue font-medium">HackITBA</span> es una
+        hackathon presencial organizada por y para estudiantes, donde, en grupos
+        de 4 personas, deben generar un MVP en 36 horas de competencia
         intensiva.
-      </Text>
-      <Text textAlign="center" fontSize={TextSize}>
+      </p>
+
+      <p className="text-center text-xl">
         La competencia tiene como meta promover soluciones creativas a problemas
         actuales en un ambiente desafiante y cooperativo.
-      </Text>
-      <Divider variant="thick"></Divider>
-      <Text textAlign="center" fontSize={TextSize}>
+      </p>
+
+      <Separator className="bg-border h-[1px]" />
+
+      <p className="text-center text-xl">
         La competencia será en el ITBA (Iguazú 341, Parque Patricios, CABA).
-      </Text>
-      <Divider variant="thick"></Divider>
-    </VStack>
+      </p>
+
+      <Separator className="bg-border h-[1px]" />
+    </div>
   );
 };
 const Categories = ({ ...extendedProps }) => {
@@ -574,9 +575,7 @@ const MentorsSection = ({ ...extendedProps }) => {
       details: ["Software Engineer @ IOL"],
       mail: "",
       linkedin: "https://www.linkedin.com/in/fernandezpablo85/",
-      description:
-        "✅ Software Engineer @ IOL\n\n" +
-        "&nbsp; \n\n",
+      description: "✅ Software Engineer @ IOL\n\n" + "&nbsp; \n\n",
       revealed: true,
     },
     {
@@ -585,9 +584,7 @@ const MentorsSection = ({ ...extendedProps }) => {
       details: ["Software Engineer @ IOL"],
       mail: "",
       linkedin: "https://www.linkedin.com/in/federico-macchi-44a7a182/",
-      description:
-        "✅ Software Engineer @ IOL" +
-        "&nbsp; \n\n",
+      description: "✅ Software Engineer @ IOL" + "&nbsp; \n\n",
       revealed: true,
     },
   ];
