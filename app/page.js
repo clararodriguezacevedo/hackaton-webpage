@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import {
   Heading,
   Flex,
-  Text,
-  Button,
   Grid,
   Img,
   VStack,
@@ -22,7 +20,10 @@ import {
   Box,
   CircularProgress,
 } from "@chakra-ui/react";
-import { Separator } from "../components/ui/separator";
+import { Separator } from "../components/UI/separator";
+import { Button } from "../components/UI/button";
+import { Text } from "@/components/UI/text";
+import { ResizableImage } from "@/components/UI/resizableImage";
 import SponsorLogo from "../components/SponsorLogo";
 import styled from "@emotion/styled";
 import NewLogo from "../components/NewLogo";
@@ -63,7 +64,7 @@ const TextSize = ["xs", "sm", "md", "lg", "xl"];
 const GeneralInfo = ({ ...extendedProps }) => {
   return (
     <div
-      className="w-full px-[5%] my-16 space-y-4 flex flex-col justify-center"
+      className="w-full px-[5%] mt-16 space-y-4 flex flex-col justify-center"
       {...extendedProps}
     >
       <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
@@ -143,10 +144,10 @@ const Categories = ({ ...extendedProps }) => {
     },
   ];
   return (
-    <VStack spacing={4} paddingX="5%" paddingY="5%">
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+    <div className="flex flex-col space-y-4 px-[5%] py-[5%]">
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Categorías
-      </Heading>
+      </h1>
       <Flex
         width="full"
         direction="row"
@@ -161,7 +162,7 @@ const Categories = ({ ...extendedProps }) => {
           return <NewCategoryLogo key={category.name} category={category} />;
         })}
       </Flex>
-    </VStack>
+    </div>
   );
 };
 const InscriptionSection = ({ ...extendedProps }) => {
@@ -1053,81 +1054,73 @@ const DoubtSection = ({ ...extendedProps }) => {
 
 const Editions = () => {
   return (
-    <VStack width="full">
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+    <div className="flex flex-col w-full items-center gap-4">
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Ediciones Anteriores
-      </Heading>
-      <HStack justify="center" spacing="5%">
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+      </h1>
+      <div className="flex flex-row justify-center gap-4">
+        <Button
+          variant="primary"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2024";
           }}
         >
           2024
-        </PrimaryButton>
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+        </Button>
+        <Button
+          variant="ingresar"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2023";
           }}
         >
           2023
-        </PrimaryButton>
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+        </Button>
+        <Button
+          variant="ingresar"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2022";
           }}
         >
           2022
-        </PrimaryButton>
-        <Spacer />
-      </HStack>
-    </VStack>
+        </Button>
+      </div>
+    </div>
   );
 };
 
 const ThankYouMessage = () => {
   return (
-    <Flex
-      direction="row"
-      width="100%"
-      alignItems="center"
-      justifyContent="space-between"
+    <div
+      className="flex flex-row w-full items-center justify-between z-90 h-[20%] pt-[4%]"
       height="20%"
       pt="4%"
       zIndex={90}
     >
-      <Img src="/images/chars-left.png" alt="Decoration" width="20%"></Img>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexWrap="wrap"
-        flexDirection="column"
-      >
-        <Text fontSize={["md", "lg", "xl", "2xl", "3xl"]} color="#ffffff">
+      <ResizableImage
+        src="/images/chars-left.png"
+        alt="Decoration"
+        widths={["20%", "20%"]}
+      ></ResizableImage>
+      <div className="flex flex-col justify-center items-center wrap">
+        <Text rFontSize={["lg", "xl", "2xl", "3xl", "4xl"]}>
           Muchas gracias por participar
         </Text>
-        <Text fontSize={["md", "lg", "xl", "2xl", "3xl"]} color="#ffffff">
+        <Text rFontSize={["lg", "xl", "2xl", "3xl", "4xl"]}>
           ¡Nos vemos el año que viene!
         </Text>
-      </Box>
-      <Img src="/images/chars-right.png" alt="Decoration" width="20%"></Img>
-    </Flex>
+      </div>
+      <ResizableImage
+        src="/images/chars-right.png"
+        alt="Decoration"
+        widths={["20%", "20%"]}
+      ></ResizableImage>
+    </div>
   );
 };
 
