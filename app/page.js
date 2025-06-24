@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 import {
   Heading,
   Flex,
-  Text,
-  Button,
   Grid,
   Img,
   VStack,
@@ -22,6 +20,10 @@ import {
   Box,
   CircularProgress,
 } from "@chakra-ui/react";
+import { Separator } from "../components/UI/separator";
+import { Button } from "../components/UI/button";
+import { Text } from "@/components/UI/text";
+import { ResizableImage } from "@/components/UI/resizableImage";
 import SponsorLogo from "../components/SponsorLogo";
 import styled from "@emotion/styled";
 import NewLogo from "../components/NewLogo";
@@ -56,41 +58,41 @@ const PrimaryButton = styled(Button)`
   }
 `;
 
-const HeadingSize = ["sm", "md", "lg", "xl", "2xl"];
+const HeadingSize = ["sm", "text-xl", "text-2xl", "text-3xl", "text-4xl"];
 const TextSize = ["xs", "sm", "md", "lg", "xl"];
 //Dejamos algunos subcomponentes aca, no los hago como componentes porque no se reutilizan
 const GeneralInfo = ({ ...extendedProps }) => {
   return (
-    <VStack spacing={4} paddingX="5%" w="full" {...extendedProps}>
-      <Heading
-        as="h1"
-        display="inline"
-        size={HeadingSize}
-        color="CSLightOrange"
-        textAlign={"center"}
-        paddingY="6px"
-      >
+    <div
+      className="w-full px-[5%] mt-16 space-y-4 flex flex-col justify-center"
+      {...extendedProps}
+    >
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         ¿Qué es HackITBA?
-      </Heading>
-      <Divider variant="thick"></Divider>
-      <Text textAlign="center" fontSize={TextSize}>
-        <Text as="span" color="CSLightBlue">
-          HackITBA
-        </Text>{" "}
-        es una hackathon presencial organizada por y para estudiantes, donde, en
-        grupos de 4 personas, deben generar un MVP en 36 horas de competencia
+      </h1>
+
+      <Separator className="bg-border h-[1px]" />
+
+      <p className="text-center text-xl">
+        <span className="text-cs-lightBlue font-medium">HackITBA</span> es una
+        hackathon presencial organizada por y para estudiantes, donde, en grupos
+        de 4 personas, deben generar un MVP en 36 horas de competencia
         intensiva.
-      </Text>
-      <Text textAlign="center" fontSize={TextSize}>
+      </p>
+
+      <p className="text-center text-xl">
         La competencia tiene como meta promover soluciones creativas a problemas
         actuales en un ambiente desafiante y cooperativo.
-      </Text>
-      <Divider variant="thick"></Divider>
-      <Text textAlign="center" fontSize={TextSize}>
+      </p>
+
+      <Separator className="bg-border h-[1px]" />
+
+      <p className="text-center text-xl">
         La competencia será en el ITBA (Iguazú 341, Parque Patricios, CABA).
-      </Text>
-      <Divider variant="thick"></Divider>
-    </VStack>
+      </p>
+
+      <Separator className="bg-border h-[1px]" />
+    </div>
   );
 };
 const Categories = ({ ...extendedProps }) => {
@@ -142,10 +144,10 @@ const Categories = ({ ...extendedProps }) => {
     },
   ];
   return (
-    <VStack spacing={4} paddingX="5%" paddingY="5%">
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+    <div className="flex flex-col space-y-4 px-[5%] py-[5%]">
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Categorías
-      </Heading>
+      </h1>
       <Flex
         width="full"
         direction="row"
@@ -160,7 +162,7 @@ const Categories = ({ ...extendedProps }) => {
           return <NewCategoryLogo key={category.name} category={category} />;
         })}
       </Flex>
-    </VStack>
+    </div>
   );
 };
 const InscriptionSection = ({ ...extendedProps }) => {
@@ -574,9 +576,7 @@ const MentorsSection = ({ ...extendedProps }) => {
       details: ["Software Engineer @ IOL"],
       mail: "",
       linkedin: "https://www.linkedin.com/in/fernandezpablo85/",
-      description:
-        "✅ Software Engineer @ IOL\n\n" +
-        "&nbsp; \n\n",
+      description: "✅ Software Engineer @ IOL\n\n" + "&nbsp; \n\n",
       revealed: true,
     },
     {
@@ -585,9 +585,7 @@ const MentorsSection = ({ ...extendedProps }) => {
       details: ["Software Engineer @ IOL"],
       mail: "",
       linkedin: "https://www.linkedin.com/in/federico-macchi-44a7a182/",
-      description:
-        "✅ Software Engineer @ IOL" +
-        "&nbsp; \n\n",
+      description: "✅ Software Engineer @ IOL" + "&nbsp; \n\n",
       revealed: true,
     },
   ];
@@ -1056,81 +1054,73 @@ const DoubtSection = ({ ...extendedProps }) => {
 
 const Editions = () => {
   return (
-    <VStack width="full">
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+    <div className="flex flex-col w-full items-center gap-4">
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Ediciones Anteriores
-      </Heading>
-      <HStack justify="center" spacing="5%">
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+      </h1>
+      <div className="flex flex-row justify-center gap-4">
+        <Button
+          variant="primary"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2024";
           }}
         >
           2024
-        </PrimaryButton>
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+        </Button>
+        <Button
+          variant="ingresar"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2023";
           }}
         >
           2023
-        </PrimaryButton>
-        <PrimaryButton
-          height="2%"
-          backgroundColor="CSLightBlue"
-          color="#14192D"
-          fontSize={["xs", "sm", "xl", "2xl", "3xl"]}
-          size={["xs", "xs", "lg", "lg", "lg"]}
+        </Button>
+        <Button
+          variant="ingresar"
+          rFontSize={["xs", "sm", "xl", "2xl", "3xl"]}
+          className="py-2 px-4"
           onClick={() => {
             location.href = "/2022";
           }}
         >
           2022
-        </PrimaryButton>
-        <Spacer />
-      </HStack>
-    </VStack>
+        </Button>
+      </div>
+    </div>
   );
 };
 
 const ThankYouMessage = () => {
   return (
-    <Flex
-      direction="row"
-      width="100%"
-      alignItems="center"
-      justifyContent="space-between"
+    <div
+      className="flex flex-row w-full items-center justify-between z-90 h-[20%] pt-[4%]"
       height="20%"
       pt="4%"
       zIndex={90}
     >
-      <Img src="/images/chars-left.png" alt="Decoration" width="20%"></Img>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexWrap="wrap"
-        flexDirection="column"
-      >
-        <Text fontSize={["md", "lg", "xl", "2xl", "3xl"]} color="#ffffff">
+      <ResizableImage
+        src="/images/chars-left.png"
+        alt="Decoration"
+        widths={["20%", "20%"]}
+      ></ResizableImage>
+      <div className="flex flex-col justify-center items-center wrap">
+        <Text rFontSize={["lg", "xl", "2xl", "3xl", "4xl"]}>
           Muchas gracias por participar
         </Text>
-        <Text fontSize={["md", "lg", "xl", "2xl", "3xl"]} color="#ffffff">
+        <Text rFontSize={["lg", "xl", "2xl", "3xl", "4xl"]}>
           ¡Nos vemos el año que viene!
         </Text>
-      </Box>
-      <Img src="/images/chars-right.png" alt="Decoration" width="20%"></Img>
-    </Flex>
+      </div>
+      <ResizableImage
+        src="/images/chars-right.png"
+        alt="Decoration"
+        widths={["20%", "20%"]}
+      ></ResizableImage>
+    </div>
   );
 };
 
