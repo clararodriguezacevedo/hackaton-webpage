@@ -8,7 +8,6 @@ import {
   Grid,
   Img,
   VStack,
-  Divider,
   Spacer,
   HStack,
   GridItem,
@@ -28,7 +27,6 @@ import SponsorLogo from "../components/SponsorLogo";
 import styled from "@emotion/styled";
 import NewLogo from "../components/NewLogo";
 import NewCategoryLogo from "../components/NewCategoryLogo";
-import Jury from "../components/Jury";
 import { CheckCircleIcon, CloseIcon } from "@chakra-ui/icons";
 import joi from "joi";
 import useStore from "../config/storeConfig";
@@ -144,26 +142,19 @@ const Categories = ({ ...extendedProps }) => {
     },
   ];
   return (
-    <div className="flex flex-col space-y-4 px-[5%] py-[5%]">
-      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
+    <div className="flex flex-col space-y-4 px-[5%] py-[5%]" {...extendedProps}>
+      <h1 className="text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Categorías
       </h1>
-      <Flex
-        width="full"
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="center"
-        alignItems="start"
-        verticalAlign="top"
-        {...extendedProps}
-      >
-        {/* Es feo pasar el array, pero es lo que se me ocurrio para que se muestre bien con distintas formas  */}
-        {categories.map((category) => {
-          return <NewCategoryLogo key={category.name} category={category} />;
-        })}
-      </Flex>
+      <div className="flex flex-wrap justify-center items-start gap-8">
+        {categories.map((category) => (
+          <NewCategoryLogo key={category.name} category={category} />
+        ))}
+      </div>
     </div>
   );
+
+
 };
 const InscriptionSection = ({ ...extendedProps }) => {
   const imageWidth = ["25%", "28%", "25%", "28%"];

@@ -1,155 +1,99 @@
-
-'use client';
-import { CloseIcon } from "@chakra-ui/icons";
-import ReactMarkdown from 'react-markdown';
+'use client'
 
 import {
-  Box,
-  Heading,
-  Img,
-  Center,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  HStack,
-  IconButton,
-  Spacer,
-  VStack,
-  Text,
-  Container,
-} from "@chakra-ui/react";
-import { useState } from "react";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog"
+import { X } from "lucide-react"
+import { useState } from "react"
+import Image from "next/image"
+import ReactMarkdown from "react-markdown"
+import { clsx } from "clsx"
 
-const HeadingSize = ["sm", "md", "lg", "xl", "2xl"];
-const TextSize = ["xs", "sm", "md", "lg", "xl"];
-const ModalSize = ["sm", "md", "lg", "xl", "2xl"];
+export default function Category({ category, className }) {
+  const [hovered, setHovered] = useState(false)
+  const [open, setOpen] = useState(false)
 
-const NewCategoryLogo = (props) => {
-  const { category } = props;
-  //separo a los tokens cuando viene un espacio que no esta seguido por una "y"
-  //ej: "hola y chau" => ["hola y", "chau"]
-  const names = category.name.split(new RegExp(" (?=[^y])"));
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [onHover, setOnHover] = useState(false);
-  const closeModal = () => {
-    setOnHover(false);
-    onClose();
-  };
+  const borderColorClass = {
+    CSRed: "border-cs-red",
+    CSGreen: "border-cs-green",
+    CSBlue: "border-cs-blue",
+    CSLightOrange: "border-orange-400",
+  }[category.color] || "border-gray-500"
+
   return (
-    // queda raro que cuando te acercas a la foto ya te toma el hover, pero bueno es por la caja que la contiene con el texto
-    <Box
-      onClick={onOpen}
-      boxSize="25%"
-      direction="column"
-      //w="100%"
-      h="100%"
-      onMouseEnter={() => setOnHover(true)}
-      onMouseLeave={() => setOnHover(false)}
-      _hover={{
-        transform: "scale(1.05)",
-        transition: "ease-in-out 0.2s",
-      }}
-      _active={{
-        transform: "scale(0.9)",
-        transition: "ease-in-out 0.1s",
-      }}
-    >
-      <Modal
-        isOpen={isOpen}
-        onClose={closeModal}
-        scrollBehavior="inside"
-        size={ModalSize}
-        isCentered
+    <Dialog open={open} onOpenChange={setOpen}>
+      <div
+        className={clsx(
+    "flex flex-col items-center w-[12em] sm:w-[14em] md:w-[18em] lg:w-[20em] transition-transform",
+    className
+  )}
+
       >
-        <ModalOverlay />
-        <ModalContent
-          backgroundColor="#14192D"
-          borderWidth="2px"
-          borderColor={category.color}
-        >
-          <ModalHeader>
-            <HStack>
-              <Heading fontSize={HeadingSize}>{category.name}</Heading>
-              <Spacer></Spacer>
-              <IconButton
-                onClick={closeModal}
-                icon={<CloseIcon />}
-              ></IconButton>
-            </HStack>
-          </ModalHeader>
-          <ModalBody p={0}>
-            <VStack>
-              <HStack p="4%">
-                <Text fontSize={TextSize} pr="6%" align="justify">
-                  <ReactMarkdown
-                    components={{//Esto es feo pero es la unica forma de forzarle margen a los bullets en mkdown
-                      ul: ({ children }) => (
-                        <ul style={{ marginTop: "20px", paddingLeft: "20px" }}>
-                          {children}
-                        </ul>
-                      ),
-                      li: ({ children }) => (
-                        <li style={{ marginTop: "10px" }}>{children}</li>
-                      ),
-                    }}
-                  >
-                    {category.description}
-                  </ReactMarkdown>
-                </Text>
-                {category.logoSvg ? (
-                  <category.logo
-                    height="100%"
-                    width="100%"
-                    color="white"
-                    strokeWidth="4px"
-                    stroke="white"
-                  />
-                ) : null}
-              </HStack>
-              <HStack w="full" align="center" justify="center">
-                <Img
-                  src={category.logoSmall}
-                  width={"20%"}
-                  alt="decoration"
-                  marginBottom={"5%"}
-                />
-                {/* Alcance de la categoria */}
-                {/* <VStack p='4%'>
-                                <Text fontWeight='bold' fontSize={HeadingSize} >Alcance de la categoría</Text>
-                                <UnorderedList> 
-                                    {category.scope.map((scopeItem)=> <ListItem key={scopeItem}>{scopeItem}</ListItem>)}
-                                </UnorderedList>
-                            </VStack> */}
-              </HStack>
-            </VStack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-      <Center>
-        {/* {isShown?<Img onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} height='200px' width='200px' src={imgSrc} alt={names[0]}></Img>: <Img onMouseEnter={()=>setIsShown(true)} onMouseLeave={()=>setIsShown(false)} height='200px' width='200px' src='/images/IEEE_CS.svg' alt={names[0]}></Img>} */}
-        {/* <Img height='200px' width='200px' src={category.imgSrc} alt={category.name}></Img> */}
-        {category.logoSvg ? (
-          <category.logo
-            height="50%"
-            width="50%"
-            color={onHover ? "#01CBA1" : "white"}
-            strokeWidth="4px"
-            stroke={onHover ? "#01CBA1" : "white"}
-          />
-        ) : (
-          <Img
-            height="100%"
-            width="100%"
-            objectFit="contain"
-            src={category.logo}
-            alt="category_logo"
-          ></Img>
+        <DialogTrigger asChild>
+          <div
+            className="relative aspect-square w-full cursor-pointer rounded-md overflow-hidden transition-transform duration-300 ease-in-out transform hover:scale-105"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <Image
+              src={category.logo}
+              alt={category.name}
+              fill
+              className="object-contain rounded-md"
+            />
+          </div>
+        </DialogTrigger>
+      </div>
+
+      <DialogContent
+        className={clsx(
+          "z-[999] bg-[#14192D] border-2 rounded-md max-w-2xl max-h-[90vh] overflow-y-auto [&>button.absolute]:hidden",
+          borderColorClass
         )}
-      </Center>
-    </Box>
-  );
-};
-export default NewCategoryLogo;
+      >
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <DialogTitle className="text-2xl font-semibold">{category.name}</DialogTitle>
+          <DialogClose asChild>
+            <button
+              aria-label="Close"
+              className="p-1 rounded bg-gray-700 hover:bg-gray-600 transition"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
+        </DialogHeader>
+
+        <div className="flex flex-col space-y-12 pt-8 text-center">
+
+          <div className="prose prose-sm prose-invert max-w-none text-left">
+            <ReactMarkdown
+              components={{
+                ul: ({ children }) => <ul className="list-disc pl-5 my-4 text-lg">{children}</ul>,
+                li: ({ children }) => <li className="mt-1 text-lg">{children}</li>,
+                p: ({ children }) => <p className="my-2 text-lg">{children}</p>,
+              }}
+            >
+              {category.description}
+            </ReactMarkdown>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="relative w-40 h-40"> 
+              <Image
+                src={category.logoSmall || category.logo}
+                alt={category.name + " logo small"}
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
