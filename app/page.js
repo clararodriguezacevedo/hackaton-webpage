@@ -348,34 +348,23 @@ const JurySection = ({ ...extendedProps }) => {
     },
   ];
   return (
-    <VStack width="full" {...extendedProps}>
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+    <div className="w-full flex flex-col items-center gap-4" {...extendedProps}>
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Jurados
-      </Heading>
-      <Text fontSize={TextSize}>Conocé a nuestros jurados</Text>
-      <Flex
-        width="full"
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="center"
-        alignItems="start"
-        verticalAlign="top"
-      >
-        {juries.map((jury, index) => {
-          return (
-            <NewJury
-              key={index}
-              jury={jury}
-              my="2%"
-              mx="4%"
-              minWidth="100px"
-              width={["20%"]}
-            />
-          );
-        })}
-      </Flex>
-    </VStack>
-  );
+      </h1>
+      <p className="text-center text-base">Conocé a nuestros jurados</p>
+
+      <div className="w-full flex flex-wrap justify-center items-start gap-4">
+        {juries.map((jury, index) => (
+          <NewJury
+            key={index}
+            jury={jury}
+            className="my-[2%] mx-[4%] min-w-[100px] w-[20%]"
+          />
+        ))}
+      </div>
+    </div>
+  )
 };
 
 const MentorsSection = ({ ...extendedProps }) => {
@@ -591,9 +580,9 @@ const MentorsSection = ({ ...extendedProps }) => {
   ];
   return (
     <VStack width="full" {...extendedProps}>
-      <Heading color="CSLightOrange" size={HeadingSize} textAlign="center">
+      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Mentores
-      </Heading>
+      </h1>
       <Text fontSize={TextSize}>
         Mentores expertos en tecnología y negocios
       </Text>

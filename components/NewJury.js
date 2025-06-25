@@ -1,236 +1,119 @@
-'use client';
+'use client'
 
 import {
-  Img,
-  VStack,
-  Text,
-  AspectRatio,
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  HStack,
-  Heading,
-  Spacer,
-  IconButton,
-  ModalBody,
-  useDisclosure,
-  LinkBox,
-} from "@chakra-ui/react";
-import styles from "./juryStyle.module.css";
-import { CloseIcon } from "@chakra-ui/icons";
-import ReactMarkdown from "react-markdown";
-import { useState } from "react";
-import { LiaLinkedinIn } from "react-icons/lia";
-import { AiFillLinkedin } from "react-icons/ai";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+  DialogOverlay,
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { X } from "lucide-react"
+import { useState } from "react"
+import Image from "next/image"
+import ReactMarkdown from "react-markdown"
+import { AiFillLinkedin } from "react-icons/ai"
+import clsx from "clsx"
 
-const HeadingSize = ["sm", "md", "lg", "xl", "2xl"];
-const TextSize = ["xs", "sm", "md", "lg", "xl"];
-const BoxTextSize = ["10cqw", "20cqw"];
-const ModalSize = ["sm", "md", "lg", "xl", "2xl"];
+export default function NewJury({ jury, className }) {
+  const revealed = jury.revealed !== false
+  const [hovered, setHovered] = useState(false)
+  const [open, setOpen] = useState(false)
 
-const Jury = ({ jury, ...extendedProps }) => {
-  const revealed = jury.revealed === undefined ? true : jury.revealed;
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [onHover, setOnHover] = useState(false);
-  const closeModal = () => {
-    setOnHover(false);
-    onClose();
-  };
+
+  if (!revealed) {
+    return (
+      <div className={clsx("flex flex-col items-center w-[8em] sm:w-[10em] md:w-[12em]", className)}>
+        <div className="relative aspect-square w-full bg-muted rounded-md flex items-center justify-center text-sm text-center p-4">
+          Próximamente
+          <div className="absolute inset-0 bg-black/60 rounded-md flex items-center justify-center text-xs p-2 text-white text-center">
+            Será revelado luego de ser publicado en nuestras redes sociales
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <>
-      {revealed ? (
-        <VStack
-          justify="center"
-          w={["8em", "8em", "10em", "12em", "13em"]}
-          {...extendedProps}
-        >
-          <AspectRatio className={styles.container} ratio={1} width="full">
-            <Box
-              onClick={onOpen}
-              onMouseEnter={() => setOnHover(true)}
-              onMouseLeave={() => setOnHover(false)}
-              _hover={{
-                transform: "scale(1.05)",
-                transition: "ease-in-out 0.2s",
-                cursor: "pointer",
-              }}
-              _active={{
-                transform: "scale(0.9)",
-                transition: "ease-in-out 0.1s",
+    <Dialog open={open} onOpenChange={setOpen}>
+      <div
+        className={clsx(
+          "flex flex-col items-center w-[8em] sm:w-[10em] md:w-[12em] transition-transform",
+          className
+        )}
+      >
+        <DialogTrigger asChild>
+          <div
+            className="relative aspect-square w-full cursor-pointer rounded-md overflow-hidden transition-transform duration-300 ease-in-out transform hover:scale-105"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <Image
+              src={jury.imgSrc}
+              alt={jury.name}
+              fill
+              className="object-cover rounded-md"
+            />
+            <div
+              className={clsx(
+                "absolute inset-0 bg-black bg-opacity-0 text-white p-2 flex flex-col items-center justify-center text-xs text-center",
+                hovered
+                  ? "bg-opacity-60 opacity-100 transition-opacity duration-300"
+                  : "opacity-0 transition-opacity duration-300"
+              )}
+            >
+  {jury.details.map((detail, idx) => (
+    <p key={idx} className="mb-1">{detail}</p>
+  ))}
+</div>
+          </div>
+        </DialogTrigger>
+
+        <p className="text-sm text-center mt-2">{jury.name}</p>
+      </div>
+
+      <DialogContent className="z-[999] bg-[#14192D] border-2 border-gray-700 rounded-md max-w-2xl max-h-[90vh] overflow-y-auto [&>button.absolute]:hidden">
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <DialogTitle className="text-2xl font-semibold">{jury.name}</DialogTitle>
+          <DialogClose asChild>
+            <button aria-label="Close" className="p-1 rounded bg-gray-700 hover:bg-gray-600 transition">
+              <X className="h-5 w-5" />
+            </button>
+          </DialogClose>
+        </DialogHeader>
+
+        <div className="flex flex-col space-y-12 pt-8 text-center ">
+          {jury.details && (
+            <div className="flex flex-col self-center space-y-1 w-[80%]">
+              {jury.details.map((detail, idx) => (
+                <p key={idx} className="text-xl text-white">{detail}</p>
+              ))}
+            </div>
+          )}
+
+          <div className="prose prose-sm prose-invert max-w-none text-left">
+            <ReactMarkdown
+              components={{
+                ul: ({ children }) => <ul className="list-disc pl-5 mt-2">{children}</ul>,
+                li: ({ children }) => <li className="mt-1">{children}</li>,
               }}
             >
-              <Img
-                src={jury.imgSrc}
-                alt={jury.name + "'s photo"}
-                borderRadius="6%"
-              />
-              <Modal
-                isOpen={isOpen}
-                onClose={closeModal}
-                scrollBehavior="inside"
-                size={ModalSize}
-                isCentered
-              >
-                <ModalOverlay />
-                <ModalContent backgroundColor="#14192D" borderWidth="2px">
-                  <ModalHeader>
-                    <HStack>
-                      <Heading fontSize={HeadingSize}>{jury.name}</Heading>
-                      <Spacer></Spacer>
-                      <IconButton
-                        onClick={closeModal}
-                        icon={<CloseIcon />}
-                      ></IconButton>
-                    </HStack>
-                  </ModalHeader>
-                  <ModalBody p={0}>
-                    <VStack>
-                      {jury.details && (
-                        <Box
-                          p="4%"
-                          textAlign="center"
-                          display="flex"
-                          flexDirection="column"
-                        >
-                          {jury.details.map((detail, index) => (
-                            <Text key={index} fontSize={TextSize}>
-                              {detail}
-                            </Text>
-                          ))}
-                        </Box>
-                      )}
-                      <HStack p="4%">
-                        <Text
-                          fontSize={TextSize}
-                          pr="6%"
-                          align="left"
-                          wordBreak="break-word"
-                          whiteSpace="normal"
-                        >
-                          <ReactMarkdown
-                            components={{
-                              //Esto es feo pero es la unica forma de forzarle margen a los bullets en mkdown
-                              ul: ({ children }) => (
-                                <ul
-                                  style={{
-                                    marginTop: "20px",
-                                    paddingLeft: "20px",
-                                  }}
-                                >
-                                  {children}
-                                </ul>
-                              ),
-                              li: ({ children }) => (
-                                <li style={{ marginTop: "10px" }}>
-                                  {children}
-                                </li>
-                              ),
-                            }}
-                          >
-                            {jury.description}
-                          </ReactMarkdown>
-                        </Text>
-                      </HStack>
+              {jury.description}
+            </ReactMarkdown>
+          </div>
 
-                      {jury.linkedin ? (
-                        <LinkBox p="5%">
-                          <a href={jury.linkedin} target="_blank">
-                            <AiFillLinkedin size={32} />
-                          </a>
-                        </LinkBox>
-                      ) : null}
-                    </VStack>
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
-              <Box
-                className={`${styles.overlay} object-contain`}
-                borderRadius="6%"
-              >
-                <VStack
-                  justifyContent="center"
-                  alignItems="center"
-                  height="100%"
-                  p="2"
-                >
-                  {jury.details.map((detail, index) => {
-                    return (
-                      <Text
-                        key={index}
-                        fontSize={["xs", "xs", "xs", "xs", "sm"]}
-                        lineHeight="short"
-                        textAlign="center"
-                      >
-                        {detail}
-                      </Text>
-                    );
-                  })}
-                </VStack>
-              </Box>
-            </Box>
-          </AspectRatio>
-          <Text
-            size={["xs", "xs", "md", "md", "lg"]}
-            textAlign="center"
-            width="100%"
-          >
-            {jury.name}
-          </Text>
-        </VStack>
-      ) : (
-        <VStack
-          justify="center"
-          w={["8em", "8em", "10em", "12em", "13em"]}
-          {...extendedProps}
-        >
-          <AspectRatio className={styles.container} ratio={1} width="full">
-            <Box>
-              <Text>Proximamente</Text>
-              <Box className={styles.overlay} borderRadius="6%">
-                <Text fontSize={TextSize} textAlign="center" pt="2">
-                  Será revelado luego de ser publicado en nuestras redes
-                  sociales
-                </Text>
-              </Box>
-            </Box>
-          </AspectRatio>
-        </VStack>
-      )}
-    </>
-  );
+          {jury.linkedin && (
+            <div className="mt-4">
+              <a href={jury.linkedin} target="_blank" rel="noopener noreferrer" className="inline-block text-white hover:text-white/80">
+                <AiFillLinkedin size={32} />
+              </a>
+            </div>
+          )}
+        </div>
+      </DialogContent>
 
-  // return (
-  // <VStack
-  //   justify="center"
-  //   w={["8em", "8em", "10em", "12em", "13em"]}
-  //   {...extendedProps}
-  // >
-  //   <AspectRatio className={styles.container} ratio={1} width="full">
-  //     <Box>
-  //       <Img
-  //         src={jury.imgSrc}
-  //         alt={jury.name + "'s photo"}
-  //         borderRadius="6%"
-  //       />
-
-  //       <Box className={styles.overlay} borderRadius="6%">
-  //         <Text fontSize={TextSize} textAlign="center" pt="2">
-  //           {jury.details}
-  //         </Text>
-  //       </Box>
-  //     </Box>
-  //   </AspectRatio>
-  //   <Text
-  //     size={["xs", "xs", "md", "md", "lg"]}
-  //     textAlign="center"
-  //     width="100%"
-  //   >
-  //     {jury.name}
-  //   </Text>
-  // </VStack>
-  // );
-};
-export default Jury;
+    </Dialog>
+  )
+}
