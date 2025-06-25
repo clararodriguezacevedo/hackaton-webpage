@@ -352,7 +352,7 @@ const JurySection = ({ ...extendedProps }) => {
       <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
         Jurados
       </h1>
-      <p className="text-center text-base">Conocé a nuestros jurados</p>
+      <p className="text-center text-xl">Conocé a nuestros jurados</p>
 
       <div className="w-full flex flex-wrap justify-center items-start gap-4">
         {juries.map((jury, index) => (
@@ -579,40 +579,30 @@ const MentorsSection = ({ ...extendedProps }) => {
     },
   ];
   return (
-    <VStack width="full" {...extendedProps}>
-      <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
-        Mentores
-      </h1>
-      <Text fontSize={TextSize}>
-        Mentores expertos en tecnología y negocios
-      </Text>
-      <Flex
-        width="full"
-        direction="row"
-        flexWrap="wrap"
-        justifyContent="center"
-        alignItems="start"
-        verticalAlign="top"
-      >
-        {mentors
-          .toSorted((m1, m2) =>
-            m1.name.toLowerCase().localeCompare(m2.name.toLowerCase())
-          )
-          .map((mentor, index) => {
-            return (
-              <Mentor
-                key={index}
-                mentor={mentor}
-                my="2%"
-                mx="4%"
-                minWidth="100px"
-                width={["20%"]}
-              />
-            );
-          })}
-      </Flex>
-    </VStack>
-  );
+  <div className="w-full flex flex-col items-center gap-4">
+    <h1 className="inline text-center py-[6px] text-cs-lightOrange text-5xl font-bold">
+      Mentores
+    </h1>
+    <p className="text-center text-xl">
+      Mentores expertos en tecnología y negocios
+    </p>
+
+    <div className="w-full flex flex-wrap justify-center items-start gap-4">
+      {mentors
+        .toSorted((m1, m2) =>
+          m1.name.toLowerCase().localeCompare(m2.name.toLowerCase())
+        )
+        .map((mentor, index) => (
+          <Mentor
+            key={index}
+            mentor={mentor}
+            className="my-[2%] mx-[4%] min-w-[100px] w-[20%]"
+          />
+        ))}
+    </div>
+  </div>
+)
+
 };
 
 const SponsorsSection = ({ ...extendedProps }) => {
